@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="/css/style.css" th:href="@{/css/style.css}">
+
+	<title>対戦画面</title>
+</head>
+
+<body>
+	<nav class="battle navbar-expand-lg fixed-top navbar-dark" layout:fragment="nav">
+
+		<h1>対戦画面</h1>
+
+		<form method="get" th:action="@{/battle/report}" th:object="${formBattlemode}">
+
+			<label>先攻行動:</label> <select name="bmode1" th:field="*{bmode1}">
+				<option value="1">移動無</option>
+				<option value="2">射撃移動</option>
+				<option value="3">突撃</option>
+			</select> <br>
+			<label>後攻行動:</label> <select name="bmode2" th:field="*{bmode2}">
+				<option value="1">移動無</option>
+				<option value="2">射撃移動</option>
+				<option value="3">突撃</option>
+			</select> <br>
+
+			<label>初期相対距離:</label> <input type="number" th:field="*{bmvc}"
+				onkeyup="value > 120 ? value.slice(1): value;" max="120" /><br>
+
+			<div th:if="${#fields.hasErrors('bmvc')}" th:errors="*{bmvc}" style="color: red"></div>
+
+			<label>対戦回数:</label> <input type="number" th:field="*{trik}" onkeyup="value > 10 ? value.slice(1): value;"
+				max="10" /><br>
+
+			<div th:if="${#fields.hasErrors('trik')}" th:errors="*{trik}" style="color: red"></div>
+
+			<input type="submit" value="戦闘" name="SOUSIN">
+
+		</form>
+
+		<br>
+		<a href="#" th:href="@{/}">Menu画面に戻る</a>
+		<br>
+		<table border="1" th:if="${reportList != null && reportList.size() >= 1}">
+			<thead>
+				<tr>
+
+					<th>対戦回数</th>
+					<th>ターン</th>
+					<th>先攻</th>
+					<th>射撃命中数</th>
+					<th>打撃数</th>
+					<th>致傷量</th>
+					<th>撃破数</th>
+					<th>白兵命中数</th>
+					<th>打撃数</th>
+					<th>致傷量</th>
+					<th>撃破数</th>
+
+					<th>後攻</th>
+					<th>射撃命中数</th>
+					<th>打撃数</th>
+					<th>致傷量</th>
+					<th>撃破数</th>
+					<th>白兵命中数</th>
+					<th>打撃数</th>
+					<th>致傷量</th>
+					<th>撃破数</th>
+
+					<th>コメント</th>
+
+
+				</tr>
+			</thead>
+
+			<tbody th:each="obj : ${reportList}" align="center" th:object=${obj}>
+				<tr>
+
+					<td th:text="${obj.sno}"></td>
+					<td th:text="${obj.tno}"></td>
+
+					<td></td>
+					<td th:text="${obj.hit1}"></td>
+					<td th:text="${obj.damage1}"></td>
+					<td th:text="${obj.uunz1}"></td>
+					<td th:text="${obj.kia1}"></td>
+
+					<td th:text="${obj.ahit1}"></td>
+					<td th:text="${obj.adamage1}"></td>
+					<td th:text="${obj.auunz1}"></td>
+					<td th:text="${obj.akia1}"></td>
+
+					<td></td>
+					<td th:text="${obj.hit2}"></td>
+					<td th:text="${obj.damage2}"></td>
+					<td th:text="${obj.uunz2}"></td>
+					<td th:text="${obj.kia2}"></td>
+
+					<td th:text="${obj.ahit2}"></td>
+					<td th:text="${obj.adamage2}"></td>
+					<td th:text="${obj.auunz2}"></td>
+					<td th:text="${obj.akia2}"></td>
+
+					<td th:text="${obj.comme}"></td>
+
+
+				</tr>
+			</tbody>
+		</table>
+
+
+		<div th:if="${reportList != null && reportList.size() == 0}">表示する戦闘結果はありません。</div>
+
+
+		<br>
+
+
+		<div class="wrap">
+			<div class="box box1">
+				<h3>先攻チャプター戦力:ユニット</h3>
+				<table border="1" th:if="${chapter1List != null && chapter1List.size() >= 1}">
+					<thead>
+						<tr>
+
+							<th>登録ID</th>
+							<th>画像</th>
+							<th>ユニット名称</th>
+							<th>所属戦団</th>
+
+							<th>ユニット役割</th>
+							<th>パワーコスト</th>
+							<th>現実価格</th>
+
+
+						</tr>
+					</thead>
+
+					<tbody th:each="obj : ${chapter1List}" align="center" th:object=${obj}>
+						<tr>
+
+							<td th:text="${obj.id}"></td>
+
+							<td><img th:src="${'/images/'+ obj.img}" alt="" width="100" height="100"></td>
+
+							<td th:text="${obj.yuname}" align="left"></td>
+							<td th:text="${obj.sendanm.fname}" align="left"></td>
+
+							<td th:text="${obj.unityakuwarim.ywname}" align="left"></td>
+
+							<td th:text="${obj.pck}"></td>
+							<td th:text="${obj.mck}"></td>
+
+						</tr>
+					</tbody>
+				</table>
+
+				<div th:if="${chapter1List != null && chapter1List.size() == 0}">登録されているユニット情報はありません。</div>
+			</div>
+
+			<div class="box box2">
+				<h3>後攻チャプター戦力:ユニット</h3>
+				<table border="1" th:if="${chapter2List != null && chapter2List.size() >= 1}">
+					<thead>
+						<tr>
+
+							<th>登録ID</th>
+							<th>画像</th>
+							<th>ユニット名称</th>
+							<th>所属戦団</th>
+
+							<th>ユニット役割</th>
+							<th>パワーコスト</th>
+							<th>現実価格</th>
+
+						</tr>
+					</thead>
+
+					<tbody th:each="obj : ${chapter2List}" align="center" th:object=${obj}>
+						<tr>
+
+							<td th:text="${obj.id}"></td>
+
+							<td><img th:src="${'/images/'+ obj.img}" alt="" width="100" height="100"></td>
+
+							<td th:text="${obj.yuname}" align="left"></td>
+							<td th:text="${obj.sendanm.fname}" align="left"></td>
+
+							<td th:text="${obj.unityakuwarim.ywname}" align="left"></td>
+
+							<td th:text="${obj.pck}"></td>
+							<td th:text="${obj.mck}"></td>
+
+						</tr>
+					</tbody>
+				</table>
+
+				<div th:if="${chapter2List != null && chapter2List.size() == 0}">登録されているユニット情報はありません。</div>
+			</div>
+
+
+		</div>
+
+	</nav>
+
+
+</body>
+
+</html>
